@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class Client extends MessageReader {
     private static final int PORT = 8989;
@@ -11,8 +10,6 @@ public class Client extends MessageReader {
         try (BufferedReader in = new BufferedReader(new FileReader(FILE))
         ) {
             in.lines().forEach(Client::send);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,8 +23,6 @@ public class Client extends MessageReader {
             System.out.println("Request:\n" + line);
             out.println(line);
             System.out.println("Response:\n" + MessageReader.read(in) + "\n");
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

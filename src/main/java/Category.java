@@ -6,4 +6,12 @@ public class Category {
         this.category = category;
         this.sum = sum;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public int getSum() {
+        return sum;
+    }
 }
