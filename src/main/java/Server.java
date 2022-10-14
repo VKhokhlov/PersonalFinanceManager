@@ -14,10 +14,12 @@ public class Server {
     private final int port;
     private final FinanceManager financeManager;
     private final Gson gson;
+    private final String dataFileName;
 
-    public Server(int port, FinanceManager financeManager) {
+    public Server(int port, String dataFileName, FinanceManager financeManager) {
         this.port = port;
         this.financeManager = financeManager;
+        this.dataFileName = dataFileName;
 
         gson = new GsonBuilder()
                 .setPrettyPrinting()
@@ -59,6 +61,8 @@ public class Server {
 
                     System.out.println(response);
                     System.out.println();
+
+                    financeManager.savePurchases(dataFileName);
                 }
             }
         } catch (IOException e) {

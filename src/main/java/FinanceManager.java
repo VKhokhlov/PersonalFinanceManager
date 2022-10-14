@@ -57,4 +57,27 @@ public class FinanceManager {
     public List<Purchase> getPurchases() {
         return purchases;
     }
+
+    @SuppressWarnings("unchecked")
+    public void loadPurchases(String dataFileName) {
+        File file = new File(dataFileName);
+
+        if (!file.exists()) {
+            return;
+        }
+
+        try (ObjectInputStream out = new ObjectInputStream(new FileInputStream(file))) {
+            purchases = (List<Purchase>) out.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("File load error: " + dataFileName);
+        }
+    }
+
+    public void savePurchases(String dataFileName) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(dataFileName))) {
+            out.writeObject(purchases);
+        } catch (IOException e) {
+            throw new RuntimeException("File save error: " + dataFileName);
+        }
+    }
 }

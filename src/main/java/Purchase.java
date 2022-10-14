@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Purchase {
+public class Purchase implements Serializable {
     private String category;
     private String title;
     private LocalDate date;
