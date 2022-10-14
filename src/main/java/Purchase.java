@@ -1,12 +1,12 @@
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Purchase {
     private String category;
     private String title;
-    private Date date;
+    private LocalDate date;
     private int sum;
 
-    public Purchase(String title, Date date, int sum) {
+    public Purchase(String title, LocalDate date, int sum) {
         this.title = title;
         this.date = date;
         this.sum = sum;
@@ -16,7 +16,7 @@ public class Purchase {
         return title;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -32,7 +32,7 @@ public class Purchase {
         this.title = title;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
