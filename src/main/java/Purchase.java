@@ -3,9 +3,9 @@ import java.time.LocalDate;
 
 public class Purchase implements Serializable {
     private String category;
-    private String title;
-    private LocalDate date;
-    private int sum;
+    private final String title;
+    private final LocalDate date;
+    private final int sum;
 
     public Purchase(String title, LocalDate date, int sum) {
         this.title = title;
@@ -29,19 +29,22 @@ public class Purchase implements Serializable {
         this.category = category;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public String getCategory() {
         return category;
     }
 
-    public void setSum(int sum) {
-        this.sum = sum;
+    public boolean cmpYear(Purchase purchase) {
+        LocalDate date = purchase.getDate();
+        return this.date.getYear() == date.getYear();
+    }
+
+    public boolean cmpMonth(Purchase purchase) {
+        LocalDate date = purchase.getDate();
+        return this.date.getYear() == date.getYear() && this.date.getMonth() == date.getMonth();
+    }
+
+    public boolean cmpDay(Purchase purchase) {
+        LocalDate date = purchase.getDate();
+        return this.date.equals(date);
     }
 }

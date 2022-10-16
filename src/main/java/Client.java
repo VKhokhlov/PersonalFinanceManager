@@ -16,6 +16,10 @@ public class Client extends MessageReader {
     }
 
     public static void send(String line) {
+        if (line.isEmpty() || line.startsWith("#")) {
+            return;
+        }
+
         try (Socket clientSocket = new Socket(HOST, PORT);
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FinanceManager {
     private Map<String, String> categories;
@@ -41,13 +42,33 @@ public class FinanceManager {
     }
 
     public Statistics getStatistics() {
-        Map.Entry<String, Integer> maxCategory = purchases.stream()
+        if (purchases.size() == 0) {
+            return null;
+        }
+
+        Purchase lastPurchase = purchases.get(purchases.size() - 1);
+
+        Stream<Purchase> maxStream = purchases.stream();
+        Stream<Purchase> maxYearStream = purchases.stream().filter(p -> p.cmpYear(lastPurchase));
+        Stream<Purchase> maxMonthStream = purchases.stream().filter(p -> p.cmpMonth(lastPurchase));
+        Stream<Purchase> maxDayStream = purchases.stream().filter(p -> p.cmpDay(lastPurchase));
+
+        Category maxCategory = MaxCategory(maxStream);
+        Category maxYearCategory = MaxCategory(maxYearStream);
+        Category maxMonthCategory = MaxCategory(maxMonthStream);
+        Category maxDayCategory = MaxCategory(maxDayStream);
+
+        return new Statistics(maxCategory, maxYearCategory, maxMonthCategory, maxDayCategory);
+    }
+
+    public Category MaxCategory(Stream<Purchase> purchaseStream) {
+        Map.Entry<String, Integer> maxCategory = purchaseStream
                 .collect(Collectors.toMap(Purchase::getCategory, Purchase::getSum, Integer::sum))
                 .entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .get();
 
-        return new Statistics(maxCategory.getKey(), maxCategory.getValue());
+        return new Category(maxCategory.getKey(), maxCategory.getValue());
     }
 
     public Map<String, String> getCategories() {
@@ -69,7 +90,7 @@ public class FinanceManager {
         try (ObjectInputStream out = new ObjectInputStream(new FileInputStream(file))) {
             purchases = (List<Purchase>) out.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("File load error: " + dataFileName);
+            throw new RuntimeException("File load error: " + dataFileName + " (" + e.getMessage() + ")");
         }
     }
 
